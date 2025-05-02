@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: Combined API Specification
+  version: 1.0.0
+paths:
+  /registerComponent:
+    post:
+      summary: Register a React component
+      description: Registers a React component with a given name and options.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                componentName:
+                  type: string
+                  description: The name of the component.
+                component:
+                  type: object
+                  description: The React component itself (represented as JSON).
+                options:
+                  type: object
+                  description: Optional configuration for the component.
+              required:
+              - componentName
+              - component
+      responses:
+        '200':
+          description: Component registered successfully.
+        '400':
+          description: Invalid request body.
+        '500':
+          description: Internal server error.
+  /registerBeforeComponent:
+    post:
+      summary: Register a component to be rendered before another component
+      description: Registers a React component to be rendered before another component
+        given its name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                componentName:
+                  type: string
+                  description: The name of the main component.
+                component:
+                  type: object
+                  description: The React component to be rendered before (represented
+                    as JSON).
+              required:
+              - componentName
+              - component
+      responses:
+        '200':
+          description: Component registered successfully.
+        '400':
+          description: Invalid request body or component not registered.
+        '500':
+          description: Internal server error.
+  /registerAfterComponent:
+    post:
+      summary: Register a component to be rendered after another component
+      description: Registers a React component to be rendered after another component
+        given its name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                componentName:
+                  type: string
+                  description: The name of the main component.
+                component:
+                  type: object
+                  description: The React component to be rendered after (represented
+                    as JSON).
+              required:
+              - componentName
+              - component
+      responses:
+        '200':
+          description: Component registered successfully.
+        '400':
+          description: Invalid request body or component not registered.
+        '500':
+          description: Internal server error.
+  /registerComponentExtend:
+    post:
+      summary: Register an extension for a React component
+      description: Registers an extension (methods/properties) to be added to a React
+        component prototype.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                componentName:
+                  type: string
+                  description: The name of the component to extend.
+                extend:
+                  type: object
+                  description: The extension object (methods/properties).
+                options:
+                  type: object
+                  description: Optional configuration for the extension.
+              required:
+              - componentName
+              - extend
+      responses:
+        '200':
+          description: Extension registered successfully.
+        '400':
+          description: Invalid request body.
+        '500':
+          description: Internal server error.
+  /extendComponent:
+    post:
+      summary: Extend a React component
+      description: Extends a React component's prototype with new methods and properties.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                componentName:
+                  type: string
+                  description: The name of the component to extend.
+                extend:
+                  type: object
+                  description: The extension object (methods/properties).
+                options:
+                  type: object
+                  description: Optional configuration for the extension.
+              required:
+              - componentName
+              - extend
+      responses:
+        '200':
+          description: Component extended successfully.
+        '400':
+          description: Invalid request body or component not found.
+        '500':
+          description: Internal server error.
+  /extendController:
+    post:
+      summary: Extend the React components controller
+      description: Extends the React components controller with components and extensions
+        from another controller.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                controller:
+                  type: object
+                  description: The controller object with components and extensions.
+              required:
+              - controller
+      responses:
+        '200':
+          description: Controller extended successfully.
+        '400':
+          description: Invalid request body or controller missing components.
+        '500':
+          description: Internal server error.
+  /getComponent:
+    get:
+      summary: Get a React component
+      description: Retrieves a React component by its name and renders it with optional
+        props and options.
+      parameters:
+      - name: componentName
+        in: query
+        description: The name of the component to retrieve.
+        required: true
+        schema:
+          type: string
+      - name: props
+        in: query
+        description: Optional props to pass to the component (JSON stringified).
+        schema:
+          type: string
+      - name: options
+        in: query
+        description: Optional options to configure the component (JSON stringified).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved and rendered the component.
+          content:
+            application/json:
+              schema:
+                type: string
+                description: The rendered component (HTML or JSON).
+        '400':
+          description: Invalid request parameters or component not found.
+        '500':
+          description: Internal server error.
+components:
+  schemas: {}
